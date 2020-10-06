@@ -1,12 +1,17 @@
 package com.mayab.calidad.doubles.tareaUnitTest.Assigment3_UnitTest;
 
+import java.util.ArrayList;
+
 public class Account {
     
-    int balance;
-    String holder;
-    int zone;
-    AlertListener alerts;
+    private int balance;
+    private String holder;
+    private int zone;
+    private AlertListener alerts;
 	private int id;
+	private ArrayList<Integer> transactions = new ArrayList<>();
+	private ArrayList<Integer> commisions = new ArrayList<>();
+	
 
     public Account(Integer id, String holder, int initialBalance, int zone, AlertListener alert){
         this.id = id;
@@ -32,23 +37,34 @@ public class Account {
     	return this.zone;
     }
 
-    void debit(int balance) {
-    	float c = getCommision();
+    boolean debit(int balance) {
+    	float c = getCommisionRate();
     	float multiplier = 1 + c;
-        this.balance -= balance * multiplier;
+    	int commision = (int) (balance * multiplier);
+        this.balance -= commision;
         
         if(this.balance < 100){
             this.alerts.sendAlert(this.holder+", your account balance is below 100");
         }
+        
+        this.transactions.add(balance);
+        this.commisions.add(commision);
+        
+        return false;
     }
 
-    void credit(int balance) {
-    	float c = getCommision();
+    boolean credit(int balance) {
+    	float c = getCommisionRate();
     	float multiplier = 1 - c;
-        this.balance += balance * multiplier;
+    	float commision = balance * multiplier;
+        this.balance += commision;
+        
+        this.transactions.add(balance);
+        this.commisions.add((int) commision);
+        return false;
     }
     
-    float getCommision() {
+    float getCommisionRate() {
     	float commision = 0.0f;
     	if (this.zone == 1 ) {
     		commision = 0.01f;
@@ -58,6 +74,18 @@ public class Account {
 			commision = 0.03f;
 		}
 		return commision;
+    }
+    
+    int calculateCommisionsTotal() {
+    	int total = 0;
+    	for (Integer i: this.commisions) {
+			total += i; 
+		}
+    	return total;
+    }
+    
+    public ArrayList<Integer> getComisionsList() {
+		return commisions;
     }
     
     void setAlertListener(AlertListener listener){

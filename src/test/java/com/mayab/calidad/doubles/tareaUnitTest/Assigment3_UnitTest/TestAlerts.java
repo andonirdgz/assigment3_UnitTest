@@ -1,12 +1,10 @@
 package com.mayab.calidad.doubles.tareaUnitTest.Assigment3_UnitTest;
 
-import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
-import static org.mockito.Mockito.*;
 
 public class TestAlerts {
 	
@@ -25,7 +23,7 @@ public class TestAlerts {
 	public void testAlertSendingIfBalanceBelow100() {
 		
 		System.out.println("Balance: " + account.getBalance());
-		account.debit(892);
+		account.debit(893);
 		System.out.println("Balance after: " + account.getBalance());
 		
 		verify(alert).sendAlert(account.getHolder() + ", your account balance is below 100");
