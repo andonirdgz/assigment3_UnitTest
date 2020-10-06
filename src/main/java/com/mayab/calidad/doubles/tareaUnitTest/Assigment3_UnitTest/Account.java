@@ -33,24 +33,29 @@ public class Account {
     }
 
     void debit(int balance) {
-        this.balance -= getCommision(balance);
+    	float c = getCommision();
+    	float multiplier = 1 + c;
+        this.balance -= balance * multiplier;
+        
         if(this.balance < 100){
             this.alerts.sendAlert(this.holder+", your account balance is below 100");
         }
     }
 
     void credit(int balance) {
-        this.balance += balance - this.balance * getCommision(balance);
+    	float c = getCommision();
+    	float multiplier = 1 - c;
+        this.balance += balance * multiplier;
     }
     
-    float getCommision(int amount) {
+    float getCommision() {
     	float commision = 0.0f;
     	if (this.zone == 1 ) {
-    		commision = (float) (amount*1.01);
+    		commision = 0.01f;
 		}else if (this.zone == 2) {
-			commision = (float) (amount*1.02);
+			commision = 0.02f;
 		}else if (this.zone == 3) {
-			commision = (float) (amount*1.03);
+			commision = 0.03f;
 		}
 		return commision;
     }
