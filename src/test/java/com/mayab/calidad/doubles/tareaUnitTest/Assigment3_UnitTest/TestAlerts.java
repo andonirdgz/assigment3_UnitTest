@@ -25,7 +25,7 @@ public class TestAlerts {
 	public void testAlertSendingIfBalanceBelow100() {
 		
 		System.out.println("Balance: " + account.getBalance());
-		account.debit(100);
+		account.debit(892);
 		System.out.println("Balance after: " + account.getBalance());
 		
 		verify(alert).sendAlert(account.getHolder() + ", your account balance is below 100");
